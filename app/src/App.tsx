@@ -4,12 +4,21 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import React from 'react'
-import './App.css'
-
 const theme = createTheme()
 
 function App() {
-  const onSubmit = () => {}
+
+  const [jobPostings, setJobPostings] = React.useState([])
+  const [error, setError] = React.useState('')
+
+  React.useEffect(() => {
+    fetch('http://localhost:4000/job-postings', { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
+      .then(response => response.json())
+      .then(setJobPostings)
+      .catch(setError)
+  }, [])
+
+  const onSubmit = () => { }
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
@@ -24,7 +33,7 @@ function App() {
               alignItems: 'center',
             }}
           >
-            <span>Hello world</span>
+            <span>Create new job post</span>
 
             <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 1 }}>
               <Stack gap={2} width={'100%'}>
@@ -37,12 +46,23 @@ function App() {
                   name="title"
                   autoFocus
                 />
-                <LoadingButton 
+
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="description"
+                  label="Description"
+                  name="description"
+                  autoFocus
+                />
+
+                <LoadingButton
                   type="submit"
                   fullWidth
                   variant="contained"
                 >
-                  Build
+                  Save
                 </LoadingButton>
               </Stack>
             </Box>
@@ -64,7 +84,14 @@ function App() {
               alignItems: 'center',
             }}
           >
-            <CircularProgress />
+            <div className='row'>
+              {jobPostings.map((job: any) =>
+                <div>
+                  <div> {job.title}</div>
+                  <div> {job.description}</div>
+                </div>
+              )}
+            </div>
           </Box>
         </Grid>
       </Grid>
