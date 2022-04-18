@@ -1,12 +1,10 @@
-import { LoadingButton } from '@mui/lab'
-import { Box, Button, CircularProgress, Paper, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { Box, Button, InputAdornment, Paper, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import React, { useState } from 'react'
 import JobPostingsList from './components/JobPostingsList'
 import createNewJobPosting from './lib/createNewJobPosting'
-import postTest from './lib/createNewJobPosting'
 
 
 const theme = createTheme()
@@ -85,6 +83,11 @@ function App() {
                   label={feeStructure === 'fixedFee' ? "Fee Amount" : "Fee Percentage"}
                   name="feeAmount"
                   autoFocus
+                  InputProps={feeStructure === 'fixedFee' ? {
+                    startAdornment: <InputAdornment position="start">£</InputAdornment>,
+                  } : {
+                    endAdornment: < InputAdornment position="end" >%</InputAdornment>
+                  }}
                 />
 
                 <Button
@@ -92,7 +95,9 @@ function App() {
                   fullWidth
                   variant="contained"
                   onClick={() => {
-                    createNewJobPosting(title, description, feeStructure, feeAmount)
+                    createNewJobPosting(title, description, feeStructure, feeAmount);
+                    alert('New Job Created');
+                    window.location.reload();
                   }}
                 >
                   Save
@@ -121,7 +126,7 @@ function App() {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
 
