@@ -13,7 +13,7 @@ export default function JobPostingsList() {
                 setJobPostings(jobs)
             })
             .catch(setError)
-    }, [jobPostings])
+    }, [])
 
     return (
 
