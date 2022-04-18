@@ -260,8 +260,8 @@ Display the contents of the news article alongside the job posting in the list.
 # Your TODO 
 
 - [x] Initial codebase setup (hello world)
-- [ ] Story 1 
-- [ ] Story 2
+- [x] Story 1 
+- [x] Story 2
 - [ ] Story 3
 - [ ] Story 4
 - [ ] Story 5
