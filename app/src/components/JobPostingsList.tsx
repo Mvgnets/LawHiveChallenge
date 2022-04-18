@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import axios from 'axios'
-import React from 'react'
+import React, { Key } from 'react'
 
 export default function JobPostingsList() {
     const [jobPostings, setJobPostings] = React.useState([])
@@ -19,7 +19,7 @@ export default function JobPostingsList() {
 
         < div className='row' >
             {
-                jobPostings.map((job: any) =>
+                jobPostings.map((job: any, i: Key) =>
                     <Box
                         sx={{
                             mt: 4,
@@ -31,9 +31,12 @@ export default function JobPostingsList() {
                             alignItems: 'center',
                             backgroundColor: '#e6e6e6'
                         }}
+                        key={i}
                     >
                         <div> {job.title}</div>
                         <div> {job.description}</div>
+                        <div> {job.feeStructure === 'fixedFee' ? 'Fixed Fee' : 'No Win No Fee'}</div>
+                        <div> {(job.feeStructure === 'fixedFee' ? '£' : '') + job.feeAmount + (job.feeStructure === 'noWinNoFee' ? '%' : '')}</div>
                     </Box>
                 )
             }

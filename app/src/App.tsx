@@ -1,9 +1,9 @@
 import { LoadingButton } from '@mui/lab'
-import { Box, Button, CircularProgress, Paper, Stack, TextField } from '@mui/material'
+import { Box, Button, CircularProgress, Paper, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import JobPostingsList from './components/JobPostingsList'
 import createNewJobPosting from './lib/createNewJobPosting'
 import postTest from './lib/createNewJobPosting'
@@ -15,6 +15,16 @@ const theme = createTheme()
 function App() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [feeStructure, setFeeStructure] = React.useState('fixedFee');
+  const [feeAmount, setFeeAmount] = useState(0)
+
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newFeeStructure: string,
+  ) => {
+    setFeeStructure(newFeeStructure);
+  };
+
   const onSubmit = () => { }
   return (
     <ThemeProvider theme={theme}>
@@ -55,12 +65,34 @@ function App() {
                   name="description"
                   autoFocus
                 />
+
+                <ToggleButtonGroup
+                  color="primary"
+                  value={feeStructure}
+                  exclusive
+                  onChange={handleChange}
+                >
+                  <ToggleButton value="fixedFee">Fixed Fee</ToggleButton>
+                  <ToggleButton value="noWinNoFee">No Win No Fee</ToggleButton>
+                </ToggleButtonGroup>
+
+                <TextField
+                  onChange={e => setFeeAmount(parseFloat(e.target.value))}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="feeAmount"
+                  label={feeStructure === 'fixedFee' ? "Fee Amount" : "Fee Percentage"}
+                  name="feeAmount"
+                  autoFocus
+                />
+
                 <Button
                   type="button"
                   fullWidth
                   variant="contained"
                   onClick={() => {
-                    createNewJobPosting(title, description)
+                    createNewJobPosting(title, description, feeStructure, feeAmount)
                   }}
                 >
                   Save

@@ -16,8 +16,11 @@ export class JobPosting {
     @Prop()
     state: string;
 
-    @Prop({ type: Object })
-    feeStructure: NoWinNoFee | FixedFee;
+    @Prop()
+    feeStructure: string;
+
+    @Prop()
+    feeAmount: number;
 
 }
 
