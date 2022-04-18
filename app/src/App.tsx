@@ -1,23 +1,20 @@
 import { LoadingButton } from '@mui/lab'
-import { Box, CircularProgress, Paper, Stack, TextField } from '@mui/material'
+import { Box, Button, CircularProgress, Paper, Stack, TextField } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import React from 'react'
+import { useState } from 'react'
+import JobPostingsList from './components/JobPostingsList'
+import createNewJobPosting from './lib/createNewJobPosting'
+import postTest from './lib/createNewJobPosting'
+
+
 const theme = createTheme()
 
+
 function App() {
-
-  const [jobPostings, setJobPostings] = React.useState([])
-  const [error, setError] = React.useState('')
-
-  React.useEffect(() => {
-    fetch('http://localhost:4000/job-postings', { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
-      .then(response => response.json())
-      .then(setJobPostings)
-      .catch(setError)
-  }, [])
-
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
   const onSubmit = () => { }
   return (
     <ThemeProvider theme={theme}>
@@ -38,6 +35,7 @@ function App() {
             <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 1 }}>
               <Stack gap={2} width={'100%'}>
                 <TextField
+                  onChange={e => setTitle(e.target.value)}
                   margin="normal"
                   required
                   fullWidth
@@ -48,6 +46,7 @@ function App() {
                 />
 
                 <TextField
+                  onChange={e => setDescription(e.target.value)}
                   margin="normal"
                   required
                   fullWidth
@@ -56,14 +55,16 @@ function App() {
                   name="description"
                   autoFocus
                 />
-
-                <LoadingButton
-                  type="submit"
+                <Button
+                  type="button"
                   fullWidth
                   variant="contained"
+                  onClick={() => {
+                    createNewJobPosting(title, description)
+                  }}
                 >
                   Save
-                </LoadingButton>
+                </Button>
               </Stack>
             </Box>
           </Box>
@@ -84,14 +85,7 @@ function App() {
               alignItems: 'center',
             }}
           >
-            <div className='row'>
-              {jobPostings.map((job: any) =>
-                <div>
-                  <div> {job.title}</div>
-                  <div> {job.description}</div>
-                </div>
-              )}
-            </div>
+            <JobPostingsList />
           </Box>
         </Grid>
       </Grid>
